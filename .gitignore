@@ -50,3 +50,5 @@ crashlytics-build.properties
 .vs/
 .idea/
 .vscode/
+.claude/
+
