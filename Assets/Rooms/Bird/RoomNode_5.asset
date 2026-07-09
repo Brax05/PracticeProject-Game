@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da649d1e9c0868fa7ad4a08059ac5807, type: 3}
+  m_Name: RoomNode_5
+  m_EditorClassIdentifier: Assembly-CSharp::TravesiaACasa.Rooms.RoomNode
+  roomId: 5
+  testWorldPosition: {x: 0, y: 0, z: 0}
+  connections:
+  - {fileID: 11400000, guid: 271bbd6700deb3f0c8a9951031372445, type: 2}
+  - {fileID: 11400000, guid: 673b2695c20c93128a3ff3b3e635a608, type: 2}
+  - {fileID: 11400000, guid: 043ff179630da8ef08b737d399343d50, type: 2}
