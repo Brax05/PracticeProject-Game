@@ -84,10 +84,11 @@ Diferencias con el prototipo:
 - El jugador es el Yal austral real (`ave.png` + `BirdPlayerController`,
   namespace `TravesiaACasa.Rooms`) en vez del cubo — mismo esquema de
   Rigidbody2D/BoxCollider2D, así que `RoomExitPoint` no cambió nada.
-- Cada room tiene fondo ilustrado (`fondo  juego.png`, se repite en
-  las 9 por ahora — todavía no hay una ilustración distinta por
-  celda), decoración dispersa (`arbusto 1.png`, `nido.png`) y el marco
-  de hojas (`hojas.png`) en primer plano.
+- Cada room tiene fondo ilustrado, alternando entre `fondo  juego.png`
+  y `fondo inicio.png` (los dos únicos fondos "room completa" que hay
+  todavía — no hay una ilustración distinta por celda), decoración
+  dispersa (`arbusto 1.png`, `nido.png`) y el marco de hojas
+  (`hojas.png`) en primer plano.
 - La cámara no sigue al jugador en tiempo real: `CameraRoomFollower`
   la deja fija en el centro de la room actual y salta en seco al
   cambiar de nodo (el "sin scroll continuo" que pedía el diseño
@@ -104,3 +105,35 @@ Diferencias con el prototipo:
 Pendiente real para cuando existan ilustraciones por celda: reemplazar
 el fondo compartido de `BuildRoomVisuals` por el `roomPrefab` propio de
 cada `RoomData`, como ya se preveía arriba.
+
+## HUD del juego + Configuración en juego
+
+Al correr `Game > Build Game Scene (Cap 1)` la escena ahora incluye:
+
+- **EventSystem** (antes faltaba: ningún botón del HUD respondía).
+- **D-pad** abajo-izquierda con `flecha.png` rotada. Cada flecha usa
+  `HudMoveButton` (PointerDown/Up, no `Button.onClick`, para caminar
+  mientras se mantiene presionado). El teclado (WASD/flechas) sigue
+  funcionando; ambos inputs se suman en `BirdPlayerController`.
+- **Interactuar** y **Picotear** abajo-derecha (`botón.png` + etiqueta).
+  Por ahora disparan `Debug.Log` y los `UnityEvent` públicos
+  `onInteract`/`onPeck` de `GameHudController` — ahí se engancha la
+  lógica de cada room (diálogos, recoger comida, etc.) desde el Inspector.
+- **Ruedita** arriba-derecha que abre el mismo panel de Configuración del
+  menú (compartido vía `SettingsPanelBuildUtils`) pausando el juego con
+  `Time.timeScale = 0`. Escape también lo abre/cierra.
+- **Overlay de Brillo** (`BrightnessOverlay`): el slider Brillo ahora
+  oscurece la pantalla de verdad, en menú y en juego, en vivo.
+- **Etiqueta "Room X" + blink de transición** (`RoomTransitionUI`):
+  muestra en qué room estás en todo momento, y hace un blink negro
+  rápido en cada cambio de room para que el salto en seco de cámara no
+  se sienta como un glitch.
+
+`SettingsManager` ahora es persistente entre escenas (DontDestroyOnLoad +
+auto-bootstrap), así que la Configuración funciona igual venga de donde
+venga, y expone el evento `Changed` para que futuros consumidores
+(AudioManager con los 3 volúmenes, filtro daltónico, vibración móvil) se
+actualicen al instante.
+
+Para regenerar todo: `Game > Build All Scenes (Menu + Game)` (o por
+separado, `Game > Build Menu Scene` y `Game > Build Game Scene (Cap 1)`).

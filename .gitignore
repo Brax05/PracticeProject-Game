@@ -51,4 +51,7 @@ crashlytics-build.properties
 .idea/
 .vscode/
 .claude/
-
+.utmp/
+PracticeProject-Game_BurstDebugInformation_DoNotShip/
+a_BackUpThisFolder_ButDontShipItWithYourGame/
+archivos-modificados/

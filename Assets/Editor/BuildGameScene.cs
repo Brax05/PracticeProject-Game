@@ -2,11 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
+using UnityEditor.Events;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
+using TravesiaACasa.Menu.Editor;
 using TravesiaACasa.Rooms;
 using static TravesiaACasa.Rooms.Editor.RoomSceneBuildUtils;
+using static TravesiaACasa.Menu.Editor.SettingsPanelBuildUtils;
 
 namespace TravesiaACasa.Rooms.Editor
 {
@@ -183,7 +188,7 @@ namespace TravesiaACasa.Rooms.Editor
                 mainCamera.gameObject.AddComponent<CameraRoomFollower>();
             }
 
-            BuildHud(wasdSprite);
+            BuildHud(wasdSprite, bird.GetComponent<BirdPlayerController>());
 
             EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene(), ScenePath);
         }
@@ -274,8 +279,20 @@ namespace TravesiaACasa.Rooms.Editor
             SetPrivateField(exit, "targetNode", to);
         }
 
-        private static void BuildHud(Sprite wasdSprite)
+        /// <summary>
+        /// HUD de juego según las capturas del prototipo: D-pad de 4
+        /// flechas abajo-izquierda (flecha.png rotada), Interactuar y
+        /// Picotear abajo-derecha (botón.png + etiqueta), ruedita de
+        /// Configuración arriba-derecha que abre el mismo panel del menú
+        /// (SettingsPanelBuildUtils) pausando el juego, overlay de Brillo,
+        /// y el blink + etiqueta "Room X" de transición entre rooms.
+        /// Incluye el EventSystem, que antes faltaba en esta escena (sin
+        /// él ningún botón responde).
+        /// </summary>
+        private static void BuildHud(Sprite wasdSprite, BirdPlayerController birdController)
         {
+            new GameObject("EventSystem", typeof(EventSystem), typeof(InputSystemUIInputModule));
+
             GameObject canvasGO = new GameObject("HUD", typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
             Canvas canvas = canvasGO.GetComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
@@ -283,18 +300,139 @@ namespace TravesiaACasa.Rooms.Editor
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             scaler.referenceResolution = new Vector2(1920, 1080);
             scaler.matchWidthOrHeight = 0.5f;
+            Transform canvasT = canvasGO.transform;
 
-            var hintGO = new GameObject("WasdHint", typeof(RectTransform), typeof(Image));
-            hintGO.transform.SetParent(canvasGO.transform, false);
-            Image img = hintGO.GetComponent<Image>();
-            img.sprite = wasdSprite;
-            img.raycastTarget = false;
-            RectTransform rt = hintGO.GetComponent<RectTransform>();
-            rt.anchorMin = rt.anchorMax = new Vector2(0f, 0f);
-            rt.pivot = new Vector2(0f, 0f);
-            Vector2 size = SizeFromSprite(wasdSprite, 130f);
-            rt.sizeDelta = size;
-            rt.anchoredPosition = new Vector2(30f, 30f);
+            Sprite flechaSprite = LoadSprite($"{ArtRoot}/juego/flecha.png");
+            Sprite botonSprite = LoadSprite($"{ArtRoot}/juego/botón.png");
+            Sprite rueditaSprite = LoadSprite($"{ArtRoot}/juego/ruedita.png");
+
+            // ----- D-pad abajo-izquierda (flecha.png apunta hacia ARRIBA) -----
+            var dpadRoot = new GameObject("Dpad", typeof(RectTransform));
+            dpadRoot.transform.SetParent(canvasT, false);
+            RectTransform dpadRt = dpadRoot.GetComponent<RectTransform>();
+            PlaceUI(dpadRt, new Vector2(0f, 0f), Center, new Vector2(200f, 200f), new Vector2(320f, 320f));
+
+            CreateDpadButton(dpadRt, "ArribaBtn", flechaSprite, birdController, Vector2.up, new Vector2(0f, 105f), 0f);
+            CreateDpadButton(dpadRt, "AbajoBtn", flechaSprite, birdController, Vector2.down, new Vector2(0f, -105f), 180f);
+            CreateDpadButton(dpadRt, "IzquierdaBtn", flechaSprite, birdController, Vector2.left, new Vector2(-105f, 0f), 90f);
+            CreateDpadButton(dpadRt, "DerechaBtn", flechaSprite, birdController, Vector2.right, new Vector2(105f, 0f), -90f);
+
+            // Hint de teclado, chico y translúcido junto al D-pad (en PC
+            // también se puede jugar con WASD/flechas)
+            Image hint = CreateImage(canvasT, "WasdHint", wasdSprite);
+            hint.color = new Color(1f, 1f, 1f, 0.55f);
+            PlaceUI(hint.rectTransform, new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(370f, 40f), SizeFromSprite(wasdSprite, 110f));
+
+            // ----- Acciones abajo-derecha (botón.png + etiqueta) -----
+            Button picotearBtn = CreateActionButton(canvasT, "PicotearBtn", botonSprite, "Picotear",
+                new Vector2(1f, 0f), new Vector2(-170f, 160f), 220f);
+            Button interactuarBtn = CreateActionButton(canvasT, "InteractuarBtn", botonSprite, "Interactuar",
+                new Vector2(1f, 0f), new Vector2(-360f, 260f), 190f);
+
+            // ----- Ruedita de Configuración arriba-derecha -----
+            Button rueditaBtn = CreateButton(canvasT, "ConfiguracionBtn", rueditaSprite);
+            PlaceUI(rueditaBtn.GetComponent<RectTransform>(), new Vector2(1f, 1f), Center, new Vector2(-70f, -70f), SizeFromSprite(rueditaSprite, 80f));
+
+            // ----- Panel de Configuración (el mismo del menú, arranca oculto) -----
+            Button volverBtn = BuildSettingsPanel(canvasT, out GameObject settingsRoot);
+            settingsRoot.SetActive(false);
+
+            // ----- Overlay de Brillo -----
+            AddBrightnessOverlay(canvasT);
+
+            // ----- Etiqueta "Room X" + blink de transición (encima de todo) -----
+            Font legacyFont = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            var labelGO = new GameObject("RoomLabel", typeof(RectTransform), typeof(Text));
+            labelGO.transform.SetParent(canvasT, false);
+            Text label = labelGO.GetComponent<Text>();
+            label.font = legacyFont;
+            label.fontSize = 36;
+            label.alignment = TextAnchor.UpperCenter;
+            label.color = Color.white;
+            label.text = "Room ?";
+            label.raycastTarget = false;
+            RectTransform labelRt = labelGO.GetComponent<RectTransform>();
+            labelRt.anchorMin = labelRt.anchorMax = new Vector2(0.5f, 1f);
+            labelRt.pivot = new Vector2(0.5f, 1f);
+            labelRt.anchoredPosition = new Vector2(0f, -20f);
+            labelRt.sizeDelta = new Vector2(400f, 60f);
+            Outline labelOutline = labelGO.AddComponent<Outline>();
+            labelOutline.effectColor = Color.black;
+            labelOutline.effectDistance = new Vector2(2f, -2f);
+
+            var fadeGO = new GameObject("Fade", typeof(RectTransform), typeof(Image), typeof(CanvasGroup));
+            fadeGO.transform.SetParent(canvasT, false);
+            Image fadeImg = fadeGO.GetComponent<Image>();
+            fadeImg.color = Color.black;
+            fadeImg.raycastTarget = false;
+            StretchFull(fadeGO.GetComponent<RectTransform>());
+            CanvasGroup fadeGroup = fadeGO.GetComponent<CanvasGroup>();
+            fadeGroup.alpha = 0f;
+            fadeGroup.blocksRaycasts = false;
+            fadeGroup.interactable = false;
+
+            RoomTransitionUI transitionUI = canvasGO.AddComponent<RoomTransitionUI>();
+            SetPrivateField(transitionUI, "fadeGroup", fadeGroup);
+            SetPrivateField(transitionUI, "roomLabel", label);
+
+            // ----- Controller que amarra los botones de acción/configuración -----
+            var hudControllerGO = new GameObject("GameHudController");
+            GameHudController hud = hudControllerGO.AddComponent<GameHudController>();
+            SetPrivateField(hud, "settingsPanelRoot", settingsRoot);
+
+            UnityEventTools.AddPersistentListener(rueditaBtn.onClick, hud.OnOpenSettingsClicked);
+            UnityEventTools.AddPersistentListener(volverBtn.onClick, hud.OnCloseSettingsClicked);
+            UnityEventTools.AddPersistentListener(interactuarBtn.onClick, hud.OnInteractClicked);
+            UnityEventTools.AddPersistentListener(picotearBtn.onClick, hud.OnPeckClicked);
+        }
+
+        private static void CreateDpadButton(Transform parent, string name, Sprite arrowSprite,
+            BirdPlayerController birdController, Vector2 direction, Vector2 offset, float zRotation)
+        {
+            // No es un Button: HudMoveButton escucha PointerDown/Up para
+            // mover MIENTRAS está presionado (Button recién dispara al soltar)
+            var go = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(HudMoveButton));
+            go.transform.SetParent(parent, false);
+
+            Image img = go.GetComponent<Image>();
+            img.sprite = arrowSprite;
+            img.raycastTarget = true;
+
+            RectTransform rt = go.GetComponent<RectTransform>();
+            // flecha.png es más alta que ancha (325x671): ancho 60 mantiene proporción
+            PlaceUI(rt, Center, Center, offset, SizeFromSprite(arrowSprite, 60f));
+            rt.localEulerAngles = new Vector3(0f, 0f, zRotation);
+
+            HudMoveButton move = go.GetComponent<HudMoveButton>();
+            SetPrivateField(move, "player", birdController);
+            var so = new SerializedObject(move);
+            so.FindProperty("direction").vector2Value = direction;
+            so.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        private static Button CreateActionButton(Transform parent, string name, Sprite sprite, string label,
+            Vector2 anchor, Vector2 offset, float width)
+        {
+            Button btn = CreateButton(parent, name, sprite);
+            PlaceUI(btn.GetComponent<RectTransform>(), anchor, Center, offset, SizeFromSprite(sprite, width));
+
+            var labelGO = new GameObject("Label", typeof(RectTransform), typeof(Text));
+            labelGO.transform.SetParent(btn.transform, false);
+            RectTransform labelRt = labelGO.GetComponent<RectTransform>();
+            StretchFull(labelRt);
+
+            Text text = labelGO.GetComponent<Text>();
+            text.text = label;
+            text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            text.fontStyle = FontStyle.Bold;
+            text.alignment = TextAnchor.MiddleCenter;
+            text.resizeTextForBestFit = true;
+            text.resizeTextMinSize = 10;
+            text.resizeTextMaxSize = 44;
+            text.color = new Color(0.24f, 0.13f, 0.05f); // café oscuro sobre el botón naranjo
+            text.raycastTarget = false;
+
+            return btn;
         }
     }
 }

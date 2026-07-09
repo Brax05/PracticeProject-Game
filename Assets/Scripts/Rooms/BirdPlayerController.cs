@@ -12,6 +12,12 @@ namespace TravesiaACasa.Rooms
     /// clase Input vieja: el proyecto tiene activeInputHandler = 1
     /// (Input System Package puro) en ProjectSettings, así que
     /// Input.GetAxis lanzaría una excepción en tiempo real.
+    ///
+    /// El input final es la SUMA de teclado + D-pad en pantalla
+    /// (HudMoveButton). Antes Update() pisaba `input` con el teclado
+    /// cada frame, así que cualquier botón táctil quedaba anulado al
+    /// frame siguiente; ahora el HUD acumula en su propio vector y se
+    /// combinan recién al momento de mover.
     /// También voltea el sprite según la dirección horizontal.
     /// </summary>
     [RequireComponent(typeof(Rigidbody2D))]
@@ -22,7 +28,8 @@ namespace TravesiaACasa.Rooms
 
         private Rigidbody2D rb;
         private SpriteRenderer spriteRenderer;
-        private Vector2 input;
+        private Vector2 input;     // teclado + HUD ya combinados (se recalcula en Update)
+        private Vector2 hudInput;  // suma de los HudMoveButton actualmente presionados
 
         private void Awake()
         {
@@ -33,7 +40,10 @@ namespace TravesiaACasa.Rooms
 
         private void Update()
         {
-            input = ReadKeyboardInput();
+            input = ReadKeyboardInput() + hudInput;
+            // Cada componente a [-1,1] por si teclado y D-pad apuntan igual
+            input.x = Mathf.Clamp(input.x, -1f, 1f);
+            input.y = Mathf.Clamp(input.y, -1f, 1f);
 
             if (Mathf.Abs(input.x) > 0.01f)
                 spriteRenderer.flipX = input.x < 0f;
@@ -56,10 +66,13 @@ namespace TravesiaACasa.Rooms
             rb.linearVelocity = input.normalized * moveSpeed;
         }
 
-        /// <summary>Para conectar botones de D-pad en pantalla en vez de teclado.</summary>
-        public void SetInput(Vector2 direction)
-        {
-            input = direction;
-        }
+        /// <summary>Un botón del D-pad empezó a presionarse (HudMoveButton).</summary>
+        public void AddHudDirection(Vector2 direction) => hudInput += direction;
+
+        /// <summary>Un botón del D-pad se soltó (HudMoveButton).</summary>
+        public void RemoveHudDirection(Vector2 direction) => hudInput -= direction;
+
+        /// <summary>Fija de golpe el input del HUD (ej. un joystick virtual futuro).</summary>
+        public void SetInput(Vector2 direction) => hudInput = direction;
     }
 }
