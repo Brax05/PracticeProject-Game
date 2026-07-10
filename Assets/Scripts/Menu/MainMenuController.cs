@@ -12,6 +12,9 @@ namespace TravesiaACasa.Menu
     {
         [SerializeField] private string gameSceneName = "Game";
         [SerializeField] private GameObject settingsPanelRoot;
+        [SerializeField] private GameObject menuContentRoot;
+
+        private GameObject[] fallbackMenuObjects;
 
         public void OnPlayClicked()
         {
@@ -20,6 +23,7 @@ namespace TravesiaACasa.Menu
 
         public void OnOpenSettingsClicked()
         {
+            SetMenuContentVisible(false);
             if (settingsPanelRoot != null)
                 settingsPanelRoot.SetActive(true);
         }
@@ -28,6 +32,51 @@ namespace TravesiaACasa.Menu
         {
             if (settingsPanelRoot != null)
                 settingsPanelRoot.SetActive(false);
+            SetMenuContentVisible(true);
+        }
+
+        private void SetMenuContentVisible(bool visible)
+        {
+            if (menuContentRoot == null)
+                menuContentRoot = GameObject.Find("MenuContent");
+
+            if (menuContentRoot != null)
+            {
+                menuContentRoot.SetActive(visible);
+                return;
+            }
+
+            SetNamedObjectVisible("Titulo", visible);
+            SetNamedObjectVisible("BotonJugar", visible);
+            SetNamedObjectVisible("BotonConfiguracion", visible);
+        }
+
+        private void SetNamedObjectVisible(string objectName, bool visible)
+        {
+            GameObject go = GetFallbackMenuObject(objectName);
+            if (go != null)
+                go.SetActive(visible);
+        }
+
+        private GameObject GetFallbackMenuObject(string objectName)
+        {
+            if (fallbackMenuObjects == null)
+            {
+                fallbackMenuObjects = new[]
+                {
+                    GameObject.Find("Titulo"),
+                    GameObject.Find("BotonJugar"),
+                    GameObject.Find("BotonConfiguracion")
+                };
+            }
+
+            foreach (GameObject go in fallbackMenuObjects)
+            {
+                if (go != null && go.name == objectName)
+                    return go;
+            }
+
+            return null;
         }
     }
 }
