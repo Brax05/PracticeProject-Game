@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: ec95f19187f65e1f28005eb1b636b5fb
+guid: 50bccde463d7d5796b183026bd0d0e92
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6649892630489419441
-    second: Fondo png_0
+      213: -8836893195990296171
+    second: camino2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,17 +96,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Fondo png_0
+      name: camino2_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 7696
-        height: 4968
+        width: 1254
+        height: 1254
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f41b03d92e5d6b3a0800000000000000
-      internalID: -6649892630489419441
+      spriteID: 5999ee6457c0d5580800000000000000
+      internalID: -8836893195990296171
       vertices: []
       indices: 
       edges: []
@@ -135,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Fondo png_0: -6649892630489419441
+      camino2_0: -8836893195990296171
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: dea95c1c6b042ba298229b54da31ebd6
+guid: 52477884534668398b41907af884e57f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1265710404387988233
-    second: "\xE1rbol 2 png_0"
+      213: -7089340955410161140
+    second: camino4_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,17 +96,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "\xE1rbol 2 png_0"
+      name: camino4_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 740
-        height: 722
+        width: 1024
+        height: 1536
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 903ef0228e4b09110800000000000000
-      internalID: 1265710404387988233
+      spriteID: c02262546f99d9d90800000000000000
+      internalID: -7089340955410161140
       vertices: []
       indices: 
       edges: []
@@ -135,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      "\xE1rbol 2 png_0": 1265710404387988233
+      camino4_0: -7089340955410161140
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

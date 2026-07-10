@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 0c28cfe8744fe43459ded801d0cf6026
+guid: 102bcc183cbd40df4a9f67389178f3ca
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8465367040090086660
-    second: arbol png_0
+      213: 3384095699251311600
+    second: camino3_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,17 +96,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: arbol png_0
+      name: camino3_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 362
-        height: 1266
+        width: 1254
+        height: 1254
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: cf2612a4789f48a80800000000000000
-      internalID: -8465367040090086660
+      spriteID: 0f33dc7db19b6fe20800000000000000
+      internalID: 3384095699251311600
       vertices: []
       indices: 
       edges: []
@@ -135,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      arbol png_0: -8465367040090086660
+      camino3_0: 3384095699251311600
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
