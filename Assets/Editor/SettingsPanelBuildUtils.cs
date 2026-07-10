@@ -16,8 +16,8 @@ namespace TravesiaACasa.Menu.Editor
 
         private const float LeftLabelX = 0.15f;
         private const float LeftControlX = 0.34f;
-        private const float RightLabelX = 0.58f;
-        private const float RightControlX = 0.80f;
+        private const float RightLabelX = 0.66f;
+        private const float RightControlX = 0.84f;
         private const float RowTop = 0.66f;
         private const float RowMiddle = 0.47f;
         private const float RowBottom = 0.28f;
@@ -82,8 +82,8 @@ namespace TravesiaACasa.Menu.Editor
             CreateLabel(panelT, "LabelPersonajes", "Personajes", 42, TextAnchor.MiddleLeft, PersonajesLabelAnchor, new Vector2(300f, 64f));
             CreateLabel(panelT, "LabelCinematica", "Cinematica", 42, TextAnchor.MiddleLeft, CinematicaLabelAnchor, new Vector2(300f, 64f));
             CreateLabel(panelT, "LabelModoDaltonico", "Modo daltonico", 42, TextAnchor.MiddleLeft, DaltonicoLabelAnchor, new Vector2(380f, 64f));
-            CreateLabel(panelT, "LabelVibracion", "Vibracion", 42, TextAnchor.MiddleLeft, VibracionLabelAnchor, new Vector2(340f, 64f));
-            CreateLabel(panelT, "LabelBrillo", "Brillo", 42, TextAnchor.MiddleLeft, BrilloLabelAnchor, new Vector2(260f, 64f));
+            CreateLabel(panelT, "LabelVibracion", "Vibracion", 42, TextAnchor.MiddleLeft, VibracionLabelAnchor, new Vector2(380f, 64f));
+            CreateLabel(panelT, "LabelBrillo", "Brillo", 42, TextAnchor.MiddleLeft, BrilloLabelAnchor, new Vector2(380f, 64f));
 
             Image separator = CreateImage(panelT, "Separador", null);
             separator.color = new Color(0.35f, 0.30f, 0.24f, 0.9f);
