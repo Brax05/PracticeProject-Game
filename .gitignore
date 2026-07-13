@@ -55,3 +55,7 @@ crashlytics-build.properties
 PracticeProject-Game_BurstDebugInformation_DoNotShip/
 a_BackUpThisFolder_ButDontShipItWithYourGame/
 archivos-modificados/
+
+# Recuperación automática de Unity
+/[Aa]ssets/_Recovery/
+/[Aa]ssets/_Recovery.meta

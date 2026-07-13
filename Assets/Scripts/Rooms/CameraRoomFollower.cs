@@ -3,11 +3,11 @@ using UnityEngine;
 namespace TravesiaACasa.Rooms
 {
     /// <summary>
-    /// Cámara 2D fija por room (sin scroll continuo, ver nota en
-    /// GRAFO_README.md): en vez de seguir al jugador en tiempo real,
-    /// se posiciona en seco sobre el nodo actual del grafo cada vez
-    /// que cambia, dando el efecto de "pantalla fija" de las capturas
-    /// del prototipo.
+    /// Cámara 2D fija por room, estilo "pantalla fija": queda clavada
+    /// en el centro del RoomNode actual y al cambiar de room corta en
+    /// seco al centro del nodo nuevo. Sin seguimiento del jugador ni
+    /// paneo: el encuadre nunca puede descuadrarse ni asomarse a la
+    /// room vecina.
     /// </summary>
     public class CameraRoomFollower : MonoBehaviour
     {
@@ -16,8 +16,8 @@ namespace TravesiaACasa.Rooms
             RoomNode current = RoomGraphManager.Instance != null ? RoomGraphManager.Instance.CurrentNode : null;
             if (current == null) return;
 
-            Vector3 target = current.testWorldPosition;
-            transform.position = new Vector3(target.x, target.y, transform.position.z);
+            Vector3 center = current.testWorldPosition;
+            transform.position = new Vector3(center.x, center.y, transform.position.z);
         }
     }
 }
