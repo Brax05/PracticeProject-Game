@@ -99,11 +99,10 @@ namespace TravesiaACasa.Menu.Editor
             Button daltonicoBtn = CreateToggleButton(panelT, "ToggleModoDaltonico", offSprite, DaltonicoAnchor, out Image daltonicoImg);
             Button vibracionBtn = CreateToggleButton(panelT, "ToggleVibracion", offSprite, VibracionAnchor, out Image vibracionImg);
 
-            Sprite flechaSprite = LoadSprite($"{ArtRoot}/juego/flecha.png");
-            Button volverBtn = CreateButton(root.transform, "BotonVolver", flechaSprite);
+            Sprite volverSprite = LoadSprite($"{ArtRoot}/juego/boton_volver.png");
+            Button volverBtn = CreateButton(root.transform, "BotonVolver", volverSprite);
             RectTransform volverRt = volverBtn.GetComponent<RectTransform>();
-            PlaceUI(volverRt, VolverAnchor, Center, Vector2.zero, SizeFromSprite(flechaSprite, 90f));
-            volverRt.localEulerAngles = new Vector3(0f, 0f, 90f);
+            PlaceUI(volverRt, VolverAnchor, Center, Vector2.zero, SizeFromSprite(volverSprite, 110f));
 
             GameObject spcGO = new GameObject("SettingsPanelController");
             spcGO.transform.SetParent(root.transform, false);
