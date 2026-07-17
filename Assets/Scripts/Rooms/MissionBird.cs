@@ -38,6 +38,7 @@ namespace TravesiaACasa.Rooms
         public bool DialogueOpen => dialoguePanel != null && dialoguePanel.activeSelf;
 
         private Transform player;
+        private GameHudController hud;
 
         private void Start()
         {
@@ -46,6 +47,7 @@ namespace TravesiaACasa.Rooms
             // para que el ave funcione igual si se convierte en prefab.
             BirdPlayerController found = FindFirstObjectByType<BirdPlayerController>();
             if (found != null) player = found.transform;
+            hud = FindFirstObjectByType<GameHudController>();
 
             if (dialoguePanel != null) dialoguePanel.SetActive(false);
             SetMission(hasMissionOnStart);
@@ -78,6 +80,7 @@ namespace TravesiaACasa.Rooms
 
             dialoguePanel.SetActive(true);
             if (dialogueBubble != null) dialogueBubble.SetActive(false);
+            hud?.SetGameplayControlsVisible(false);
         }
 
         private void CloseDialogue()
@@ -86,6 +89,7 @@ namespace TravesiaACasa.Rooms
             // La misión sigue pendiente hasta que el sistema de misiones
             // llame a CompleteMission(): el globo vuelve a mostrarse.
             if (dialogueBubble != null) dialogueBubble.SetActive(HasMission);
+            hud?.SetGameplayControlsVisible(true);
         }
 
         private bool PlayerInRange()

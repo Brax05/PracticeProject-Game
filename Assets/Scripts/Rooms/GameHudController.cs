@@ -20,6 +20,11 @@ namespace TravesiaACasa.Rooms
         [SerializeField] private Sprite topLeftHeartSprite;
         [SerializeField] private Sprite topLeftMissionSprite;
 
+        [Header("Controles de movimiento (se ocultan durante dialogos)")]
+        [SerializeField] private GameObject dpad;
+        [SerializeField] private GameObject interactuarBtn;
+        [SerializeField] private GameObject picotearBtn;
+
         [Header("Acciones (enganchar la logica de cada room aqui)")]
         public UnityEvent onInteract;
         public UnityEvent onPeck;
@@ -60,6 +65,27 @@ namespace TravesiaACasa.Rooms
                 topLeftHeartSprite = LoadEditorSprite("Assets/Arte/juego/UIIzquierda/Corazon.png");
             if (topLeftMissionSprite == null)
                 topLeftMissionSprite = LoadEditorSprite("Assets/Arte/juego/UIIzquierda/MisionLetrero.png");
+
+            // El GameObject de GameHudController quedó sin hijos propios al
+            // convertir el HUD en Prefab (Unity lo saca del prefab porque
+            // onInteract apunta a un objeto de la escena, MissionBird), así
+            // que Dpad/InteractuarBtn/PicotearBtn hay que buscarlos dentro
+            // del Canvas del HUD, no como hijos directos de este componente.
+            if (dpad == null)
+                dpad = FindHudDescendant("Dpad");
+            if (interactuarBtn == null)
+                interactuarBtn = FindHudDescendant("InteractuarBtn");
+            if (picotearBtn == null)
+                picotearBtn = FindHudDescendant("PicotearBtn");
+        }
+
+        private static GameObject FindHudDescendant(string childName)
+        {
+            Canvas canvas = TopLeftGameplayHud.FindGameplayCanvas();
+            if (canvas == null) return null;
+
+            Transform found = TopLeftGameplayHud.FindDescendant(canvas.transform, childName);
+            return found != null ? found.gameObject : null;
         }
 
         private static Sprite LoadEditorSprite(string assetPath)
@@ -148,6 +174,23 @@ namespace TravesiaACasa.Rooms
             AudioListener.pause = !AudioListener.pause;
             Debug.Log($"[GameHud] Mute {(AudioListener.pause ? "activado" : "desactivado")}");
         }
+
+        /// <summary>
+        /// Oculta/muestra el D-pad y el boton de Picotear (irrelevantes
+        /// mientras se conversa). Lo llaman los NPCs de mision (ver
+        /// MissionBird) al abrir/cerrar su cuadro de dialogo grande, para
+        /// dejarle todo el protagonismo en pantalla.
+        ///
+        /// Interactuar se deja siempre visible a proposito: es el mismo
+        /// boton que abre Y cierra el dialogo (OnInteractPressed lo
+        /// alterna), asi que ocultarlo dejaria sin forma de cerrar el
+        /// cuadro en tactil (no hay tecla E en un celular).
+        /// </summary>
+        public void SetGameplayControlsVisible(bool visible)
+        {
+            if (dpad != null) dpad.SetActive(visible);
+            if (picotearBtn != null) picotearBtn.SetActive(visible);
+        }
     }
 
     public static class TopLeftGameplayHud
@@ -194,7 +237,7 @@ namespace TravesiaACasa.Rooms
             image.preserveAspect = true;
         }
 
-        private static Transform FindDescendant(Transform root, string name)
+        public static Transform FindDescendant(Transform root, string name)
         {
             if (root.name == name)
                 return root;
@@ -209,12 +252,14 @@ namespace TravesiaACasa.Rooms
             return null;
         }
 
-        private static Canvas FindGameplayCanvas()
+        public static Canvas FindGameplayCanvas()
         {
             Canvas[] canvases = Object.FindObjectsByType<Canvas>();
             foreach (Canvas canvas in canvases)
             {
-                if (canvas.name == "HUD")
+                // "HUD" es el nombre original en escena; "GameHUD" es como
+                // quedó el root al convertirlo en Prefab (Game/Prefabs/...).
+                if (canvas.name == "HUD" || canvas.name == "GameHUD")
                     return canvas;
             }
 
