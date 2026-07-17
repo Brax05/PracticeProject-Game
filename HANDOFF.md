@@ -3,6 +3,48 @@
 > Cada agente lee esto al empezar y lo actualiza al terminar su turno.
 > Formato en AGENTS.md §5.
 
+## 2026-07-17 — Claude Code: merge de `origin/main` (HUD de Cristhian) a `testeo-1`
+- Traje `origin/main` (PR #9 "CambiosUI", commit `9f59673` de Cristhian
+  Montenegro, "Agrega HUD superior e iconos de juego") a `testeo-1`.
+  **Merge automático limpio, sin conflictos** (git `ort` fusionó
+  `Juego.unity` solo). Commit de merge local, sin pushear todavía.
+- Qué trae ese commit: assets reales en `Assets/Arte/juego/UIIzquierda/`
+  (`AveAvatar.png`, `Corazon.png`, `MisionLetrero.png`, `SliderVida.png`,
+  más `Mute.png`) y reescribió `GameHudController.cs`: agregó una clase
+  `TopLeftGameplayHud` que **genera/actualiza por código** (desde
+  `Awake()`/`OnValidate()`) un GameObject `TopLeftGameplayHud` persistente
+  bajo el Canvas `HUD` con el avatar, la barra de vida y el tag de misión —
+  siempre visible, no depende de que el diálogo esté abierto. Verifiqué que
+  los sprites quedaron bien serializados en la escena (guids no nulos) y
+  que `onInteract → MissionBird.OnInteractPressed` sigue intacto tras el
+  merge.
+- **⚠️ Duplicación confirmada:** el `MissionPortraitGroup` que construyó
+  Antigravity (dentro de `DialoguePanelCanastero`) y el `TopLeftGameplayHud`
+  de Cristhian ahora **coexisten** en la escena — ambos son un
+  "retrato + tag de misión", pero el de Cristhian es el correcto (visible
+  siempre, arte real) y el de Antigravity es el que tiene los bugs ya
+  reportados (typo "MISÓN", sprite mal renderizado, solo visible durante el
+  diálogo). Recomendación para el próximo turno de Antigravity:
+  1. **Borrar `MissionPortraitGroup`** completo (el `PortraitImage` y el
+     tag "MISIÓN" dentro de él) — ya está cubierto por el HUD de Cristhian.
+  2. **Mantener `CharacterNameText`** (el nombre "Canastero"): el HUD de
+     Cristhian no cubre el nombre del personaje dentro de la caja de
+     diálogo, así que esa pieza sigue haciendo falta. Sacarlo de depender
+     de `MissionPortraitGroup` (puede quedar como hijo directo de
+     `BackgroundBox`) y reposicionarlo abajo-derecha como una etiqueta
+     colgando del borde inferior de la caja, según el mockup (slide 6 de
+     `Docs/referencia-diseno.pdf`).
+  3. Sigue pendiente el indicador de "misión disponible" (burbuja +
+     "!" rojo sobre Canastero, antes de interactuar) — no lo cubre
+     ninguno de los dos sistemas.
+- Estado: merge commiteado localmente en `testeo-1`, **sin pushear** —
+  quedan bugs conocidos (arriba) antes de subirlo. Avisar al usuario antes
+  de hacer push.
+- NO TOCAR: no edité `Juego.unity` más allá del merge automático; los
+  cambios de contenido (borrar `MissionPortraitGroup`, mover
+  `CharacterNameText`) quedan para Antigravity como Constructor de la
+  Tarea C.
+
 ## 2026-07-17 — Claude Code → Antigravity (Gemini) [actualización rápida]
 - El usuario confirmó que el Editor de Unity **ya refleja** los cambios de
   `9df16b5` (el reload/reimport funcionó). Con eso visible, se confirman y
