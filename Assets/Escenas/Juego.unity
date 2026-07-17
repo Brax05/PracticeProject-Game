@@ -922,6 +922,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!1 &315921023 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6684463169138577580, guid: 60ced1ec05122339889a19a843b90afd, type: 3}
+  m_PrefabInstance: {fileID: 6171760938407719620}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &347509051
 GameObject:
   m_ObjectHideFlags: 0
@@ -1762,6 +1767,11 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 2, y: 2}
   m_EdgeRadius: 0
+--- !u!1 &740296038 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 143739624531605740, guid: 60ced1ec05122339889a19a843b90afd, type: 3}
+  m_PrefabInstance: {fileID: 6171760938407719620}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &880000001
 GameObject:
   m_ObjectHideFlags: 0
@@ -1871,6 +1881,9 @@ MonoBehaviour:
   dialoguePanel: {fileID: 880200010}
   interactRadius: 3
   hasMissionOnStart: 1
+  dpad: {fileID: 0}
+  interactButton: {fileID: 0}
+  peckButton: {fileID: 0}
 --- !u!1 &880000005
 GameObject:
   m_ObjectHideFlags: 0
@@ -2164,7 +2177,7 @@ Transform:
   m_GameObject: {fileID: 1043100611}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5000, y: 5000, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2724,6 +2737,9 @@ MonoBehaviour:
   topLeftHealthBarSprite: {fileID: 21300000, guid: 88052dca0d6de714bbef401a18c4c158, type: 3}
   topLeftHeartSprite: {fileID: 21300000, guid: ae5cb3b95d4abcc4393df6d388da00ea, type: 3}
   topLeftMissionSprite: {fileID: 21300000, guid: 282689c0b08d34240ba872063b64e994, type: 3}
+  dpad: {fileID: 315921023}
+  interactuarBtn: {fileID: 740296038}
+  picotearBtn: {fileID: 1651691008}
   onInteract:
     m_PersistentCalls:
       m_Calls:
@@ -4087,6 +4103,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!1 &1651691008 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3518914131508526742, guid: 60ced1ec05122339889a19a843b90afd, type: 3}
+  m_PrefabInstance: {fileID: 6171760938407719620}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1682077171
 GameObject:
   m_ObjectHideFlags: 0

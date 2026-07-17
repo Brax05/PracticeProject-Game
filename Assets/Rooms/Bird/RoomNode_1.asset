@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: RoomNode_1
   m_EditorClassIdentifier: Assembly-CSharp::TravesiaACasa.Rooms.RoomNode
   roomId: 1
-  testWorldPosition: {x: 4980, y: 5010, z: 0}
+  testWorldPosition: {x: -20, y: 10, z: 0}
   connections:
   - {fileID: 11400000, guid: 271bbd6700deb3f0c8a9951031372445, type: 2}
