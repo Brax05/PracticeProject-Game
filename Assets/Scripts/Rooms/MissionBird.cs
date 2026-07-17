@@ -49,6 +49,7 @@ namespace TravesiaACasa.Rooms
 
         private Transform player;
         private GameHudController hud;
+        private int dialogueOpenedFrame = -1;
 
         private void Start()
         {
@@ -74,6 +75,27 @@ namespace TravesiaACasa.Rooms
             Keyboard kb = Keyboard.current;
             if (kb != null && kb.eKey.wasPressedThisFrame)
                 OnInteractPressed();
+
+            // En táctil no siempre hay un botón Interactuar visible durante
+            // el diálogo (el HUD lo oculta) — cualquier toque en pantalla
+            // lo cierra, mismo patrón que IntroTutorialController. Se
+            // ignora el frame exacto en que se abrió para no cerrarlo con
+            // el mismo toque que lo abrió.
+            if (DialogueOpen && Time.frameCount != dialogueOpenedFrame && ScreenTapStartedThisFrame())
+                CloseDialogue();
+        }
+
+        private static bool ScreenTapStartedThisFrame()
+        {
+            Touchscreen touch = Touchscreen.current;
+            if (touch != null && touch.primaryTouch.press.wasPressedThisFrame)
+                return true;
+
+            Mouse mouse = Mouse.current;
+            if (mouse != null && mouse.leftButton.wasPressedThisFrame)
+                return true;
+
+            return false;
         }
 
         /// <summary>
@@ -94,6 +116,7 @@ namespace TravesiaACasa.Rooms
             if (!HasMission || !PlayerInRange()) return;
 
             dialoguePanel.SetActive(true);
+            dialogueOpenedFrame = Time.frameCount;
             if (dialogueBubble != null) dialogueBubble.SetActive(false);
 
             if (dpad != null) dpad.SetActive(false);
