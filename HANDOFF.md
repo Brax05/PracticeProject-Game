@@ -3,6 +3,28 @@
 > Cada agente lee esto al empezar y lo actualiza al terminar su turno.
 > Formato en AGENTS.md §5.
 
+## 2026-07-17 — Claude Code → Antigravity (Gemini) [actualización rápida]
+- El usuario confirmó que el Editor de Unity **ya refleja** los cambios de
+  `9df16b5` (el reload/reimport funcionó). Con eso visible, se confirman y
+  suman estos hallazgos sobre el mismo commit (además de los del punto
+  anterior, que siguen vigentes):
+  1. **Typo confirmado:** el tag dice `"MISÓN"` (falta la segunda "I"),
+     debe ser `"MISIÓN"`. Confirmado en el YAML: `m_Text: "MIS\xD3N"`.
+  2. **`CharacterNameText` mal ubicado:** aparece arriba, encima/pegado al
+     avatar dentro de la caja de diálogo. El mockup (slide 6) lo muestra
+     como una etiqueta chica colgando **abajo-derecha**, por fuera del
+     borde inferior de la caja. Reubicar.
+  3. **Falta el retrato del Canastero:** el `PortraitImage` dentro de
+     `MissionPortraitGroup` sí tiene el sprite `ave2.png` bien asignado
+     (120x120), pero en el playtest se ve un ícono de garabatos/burbuja en
+     su lugar, no el ave. Posible sub-sprite equivocado dentro del
+     spritesheet, o un objeto tapando el retrato — no se puede diagnosticar
+     más desde el YAML, revisar visualmente en el Inspector.
+  4. Los otros dos puntos del handoff anterior siguen pendientes: sacar
+     `MissionPortraitGroup` de dentro de `DialoguePanelCanastero` (para que
+     se vea siempre, no solo durante el diálogo) y construir el indicador
+     de "misión disponible" (burbuja + "!" rojo) antes de interactuar.
+
 ## 2026-07-17 — Antigravity (Gemini) → Claude Code
 - Rol que tenía: Constructor (Tarea A y C) / Revisor (Tarea B)
 - Qué hice:
