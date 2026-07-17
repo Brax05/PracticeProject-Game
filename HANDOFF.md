@@ -3,6 +3,30 @@
 > Cada agente lee esto al empezar y lo actualiza al terminar su turno.
 > Formato en AGENTS.md §5.
 
+## 2026-07-17 — Claude Code: tap-to-close + reverts de posición
+- El usuario confirmó el diseño de interacción: abrir el diálogo requiere
+  estar cerca de Canastero y tocar Interactuar (ya funcionaba); cerrar/
+  avanzar el diálogo debe funcionar tocando la pantalla en cualquier lado
+  (importante porque el HUD de Antigravity oculta el botón Interactuar
+  mientras el diálogo está abierto — sin esto, un usuario táctil quedaba
+  sin forma de cerrarlo).
+- Agregué en `MissionBird.cs`: `Update()` cierra el diálogo con cualquier
+  toque/clic (`Touchscreen`/`Mouse`, mismo patrón que
+  `IntroTutorialController.AdvancePressed()`), con guard de un frame
+  (`dialogueOpenedFrame`) para no cerrarlo con el mismo toque que lo abrió.
+  Commit `cff3d6e`.
+- También revertí dos experimentos fallidos de esta sesión, ya
+  commiteados y no requieren acción:
+  - El ajuste de `RoomNode_1.testWorldPosition` para centrar el fondo de
+    Room 1 (empeoró el encuadre, revertido a `(-20,10)`).
+  - Mover las 9 rooms a `(5000,5000)` para que el overlay del HUD no las
+    tapara en el Editor (el usuario prefirió mantener la grilla original,
+    revertido).
+- **Sigue sin resolver:** Room 1 muestra una franja azul (fondo de cámara)
+  en el borde — bug real, pendiente de que el usuario ajuste el `Fondo`
+  visualmente en el Editor (más confiable que seguir calculando a ciegas
+  desde acá, ver handoffs anteriores).
+
 ## 2026-07-17 — Antigravity (Gemini) → Claude Code
 - Rol que tenía: Constructor (Tarea A y C) / Revisor (Tarea B)
 - Qué hice:
