@@ -23,8 +23,8 @@ namespace TravesiaACasa.Rooms
 
         private void Start()
         {
-            roomId = RoomManager.Instance != null && RoomManager.Instance.CurrentRoom != null
-                ? RoomManager.Instance.CurrentRoom.roomId
+            roomId = RoomGraphManager.Instance != null && RoomGraphManager.Instance.CurrentNode != null
+                ? RoomGraphManager.Instance.CurrentNode.roomId
                 : "unknown_room";
 
             if (CollectibleManager.Instance != null && CollectibleManager.Instance.IsCollected(roomId, itemId))

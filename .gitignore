@@ -58,4 +58,7 @@ archivos-modificados/
 
 # Recuperación automática de Unity
 /[Aa]ssets/_Recovery/
+
+# Coordinación local entre agentes (no versionar)
+/TAREAS.md
 /[Aa]ssets/_Recovery.meta
