@@ -3,14 +3,8 @@ guid: 29cbaedda59fdd6aaa18c31f589f6543
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 381416356453813595
-    second: titulo _0
-  - first:
-      213: -7099387091998236615
-    second: titulo _1
-  - first:
-      213: 6701591840418033888
-    second: titulo _2
+      213: 8159548951473324912
+    second: titulo_completo
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -119,67 +113,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: titulo _0
+      name: titulo_completo
       rect:
         serializedVersion: 2
         x: 0
-        y: 257
-        width: 1815
-        height: 402
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: b5d04f5c7201b4500800000000000000
-      internalID: 381416356453813595
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: titulo _1
-      rect:
-        serializedVersion: 2
-        x: 373
-        y: 2
-        width: 246
-        height: 235
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 930a372dd09e97d90800000000000000
-      internalID: -7099387091998236615
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: titulo _2
-      rect:
-        serializedVersion: 2
-        x: 685
         y: 0
-        width: 754
-        height: 246
+        width: 1815
+        height: 659
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0e0f5c5b546d00d50800000000000000
-      internalID: 6701591840418033888
+      spriteID: 0f2f5f7f5b8a1e710800000000000000
+      internalID: 8159548951473324912
       vertices: []
       indices: 
       edges: []
@@ -198,9 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      titulo _0: 381416356453813595
-      titulo _1: -7099387091998236615
-      titulo _2: 6701591840418033888
+      titulo_completo: 8159548951473324912
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
